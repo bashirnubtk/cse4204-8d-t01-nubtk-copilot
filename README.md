@@ -33,7 +33,7 @@
 ---
 
 ## 📂 System Architecture Blueprint
-```text
+
 nubtk_copilot/                         [System Root Environment]
 ├── backend/                           [Django 5.0 Core Framework Services]
 │   ├── core/                          [Global System Settings & Routing Policies]
@@ -48,9 +48,7 @@ nubtk_copilot/                         [System Root Environment]
 └── static/                            [Compiled Tailwind Design Tokens & Asset Blobs]
 ---
 
-আপনার সমস্যাটি একদম পরিষ্কার। মূলত নাম্বারিং এবং টাইটেলগুলো কোড ব্লকের বাইরে সাধারণ টেক্সট (অথবা বোল্ড টেক্সট) হিসেবে থাকা উচিত, আর প্রতিটা ধাপের কোড বা কমান্ডগুলো আলাদা আলাদা কালো কোড ব্লকের (Markdown Code Block) ভেতরে থাকা উচিত।
-নিচে আপনার দেওয়া অংশটুকুর ফরম্যাটিং সম্পূর্ণ ঠিক করে আলাদা আলাদা ব্লকে সাজিয়ে দেওয়া হলো। আপনি গিটহাবের রিডমিতে এটি হুবহু ব্যবহার করতে পারবেন:
-Markdown
+
 ---
 
 ## 💻 Tech Stack Deployment Framework
@@ -65,7 +63,7 @@ Markdown
 Follow these steps to run the core server registry locally:
 
 1. **Clone the master repository system:**
-```bash
+
 git clone [https://github.com/bashirnubtk/cse4204-8d-t03-nubtk-copilot.git](https://github.com/bashirnubtk/cse4204-8d-t03-nubtk-copilot.git)
 cd cse4204-8d-t03-nubtk-copilot
 2.	Initialize isolated virtual execution stack:
