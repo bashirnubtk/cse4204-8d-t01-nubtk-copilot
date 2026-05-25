@@ -55,7 +55,7 @@ nubtk_copilot/                         [System Root Environment]
 
 As per the course workflow, all structured documents and sprint milestones are maintained within the repository tree:
 
-* 📄 **Project Proposal (Week 1-2):** Available in `documentation/CSE4204-8D-T03_Proposal.pdf`
+* 📄 **Project Proposal (Week 1-2):** Available in `documentation/CSE4204-8D-T01_Proposal.pdf`
 * 📄 **Software Requirements Specification - SRS (Week 3):** *[Pending Sprint Milestone]*
 * 📄 **System Architecture & ER Diagram (Week 4):** *[Pending Sprint Milestone]*
 * 📄 **UI/UX Figma Wireframes (Week 5):** *[Pending Sprint Milestone]*
