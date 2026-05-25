@@ -33,7 +33,7 @@
 ---
 
 ## 📂 System Architecture Blueprint
-
+```text
 nubtk_copilot/                         [System Root Environment]
 ├── backend/                           [Django 5.0 Core Framework Services]
 │   ├── core/                          [Global System Settings & Routing Policies]
@@ -46,12 +46,24 @@ nubtk_copilot/                         [System Root Environment]
 ├── documentation/                     [Academic & Technical Reports - Repository Checked]
 ├── presentation/                      [Project Defense & Slide Decks]
 └── static/                            [Compiled Tailwind Design Tokens & Asset Blobs]
+
+```
+
 ---
 
+## 📂 Project Documentation & Deliverables (Lab Requirements)
+
+As per the course workflow, all structured documents and sprint milestones are maintained within the repository tree:
+
+* 📄 **Project Proposal (Week 1-2):** Available in `documentation/CSE4204-8D-T03_Proposal.pdf`
+* 📄 **Software Requirements Specification - SRS (Week 3):** *[Pending Sprint Milestone]*
+* 📄 **System Architecture & ER Diagram (Week 4):** *[Pending Sprint Milestone]*
+* 📄 **UI/UX Figma Wireframes (Week 5):** *[Pending Sprint Milestone]*
 
 ---
 
 ## 💻 Tech Stack Deployment Framework
+
 * **Presentation Layer:** Semantic HTML5, Tailwind CSS Tokens, Native Interactivity Engine
 * **Business Core Layer:** Python 3.11, Django 5.0 framework, Celery Task Automation
 * **Data Layer Instance:** Relational PostgreSQL Cluster hosted via Supabase Engine
@@ -60,27 +72,50 @@ nubtk_copilot/                         [System Root Environment]
 ---
 
 ## ⚙️ Development Environment Setups
+
 Follow these steps to run the core server registry locally:
 
-1. **Clone the master repository system:**
+1. Clone the master repository system:
 
-git clone [https://github.com/bashirnubtk/cse4204-8d-t03-nubtk-copilot.git](https://github.com/bashirnubtk/cse4204-8d-t03-nubtk-copilot.git)
+```bash
+git clone [https://github.com/your-username/cse4204-8d-t03-nubtk-copilot.git](https://github.com/your-username/cse4204-8d-t03-nubtk-copilot.git)
 cd cse4204-8d-t03-nubtk-copilot
-2.	Initialize isolated virtual execution stack:
-Bash
+
+```
+
+2. Initialize isolated virtual execution stack:
+
+```bash
 python -m venv venv
 # Activate on Windows systems:
 .\venv\Scripts\activate
-3.	Fetch core framework dependencies:
-Bash
+
+```
+
+3. Fetch core framework dependencies:
+
+```bash
 pip install -r requirements.txt
-4.	Complete migrations and run local platform server:
-Bash
+
+```
+
+4. Complete migrations and run local platform server:
+
+```bash
 python manage.py migrate
 python manage.py runserver
-📝 Commit Conventions (Academic Standards)
+
+```
+
+---
+
+## 📝 Commit Conventions (Academic Standards)
+
 To maintain alignment with standard repository evaluations, all contributors adhere to structural prefixes:
-•	feat: for complete functional software modules (e.g., feat: integrate openrouter Claude API pipeline)
-•	fix: for functional code adjustments (e.g., fix: patch database pointer routing bug)
-•	docs: for project reference mappings (e.g., docs: extend component layout documentation)
+
+* `feat:` for complete functional software modules (e.g., `feat: integrate openrouter Claude API pipeline`)
+* `fix:` for functional code adjustments (e.g., `fix: patch database pointer routing bug`)
+* `docs:` for project reference mappings (e.g., `docs: extend component layout documentation`)
+
+```
 
