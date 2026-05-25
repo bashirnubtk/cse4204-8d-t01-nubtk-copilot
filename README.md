@@ -78,8 +78,8 @@ Follow these steps to run the core server registry locally:
 1. Clone the master repository system:
 
 ```bash
-git clone [https://github.com/your-username/cse4204-8d-t03-nubtk-copilot.git](https://github.com/your-username/cse4204-8d-t03-nubtk-copilot.git)
-cd cse4204-8d-t03-nubtk-copilot
+git clone [https://github.com/bashirnubtk/cse4204-8d-t01-nubtk-copilot.git](https://github.com/bashirnubtk/cse4204-8d-t01-nubtk-copilot.git)
+cd cse4204-8d-t01-nubtk-copilot
 
 ```
 
