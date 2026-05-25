@@ -18,10 +18,10 @@
 ### Core Team & Responsibilities
 | Full Member Name | Student ID | Core Infrastructure Focus | Primary GitHub Branch |
 | :--- | :--- | :--- | :--- |
-| **Bashir Alam** | 11220320963 | **Team Leader** \| Django Core Architecture, OpenRouter AI Pipelines | `branch-bashir` |
-| **Tisha Rani Chakroborty** | 11220320954 | **Frontend Architect** \| Responsive Interface Panels, Tailwind Token Engine | `branch-tisha` |
-| **Fariha Rahman Oishee** | 11220320967 | **Database Manager** \| Schema Relational Modeling, Supabase PostgreSQL Routing | `branch-oishee` |
-| **Ratul Raha Shuvo** | 11220320949 | **Backend Support** \| Payment Sub-systems, Automated Document Workflows | `branch-ratul` |
+| **Bashir Alam** | 11220320963 | **Team Leader** \| Django Core Architecture, OpenRouter AI Pipelines | `branch-bashir_core_backend` |
+| **Tisha Rani Chakroborty** | 11220320954 | **Frontend Architect** \| Responsive Interface Panels, Tailwind Token Engine | `branch-tisha_frontend` |
+| **Fariha Rahman Oishee** | 11220320967 | **Database Manager** \| Schema Relational Modeling, Supabase PostgreSQL Routing | `branch-oishee_database` |
+| **Ratul Raha Shuvo** | 11220320949 | **Backend Support** \| Payment Sub-systems, Automated Document Workflows | `branch-ratul_backend_support` |
 
 ---
 
