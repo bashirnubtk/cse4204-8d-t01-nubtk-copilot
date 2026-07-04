@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-7">
+            <div class="card border-0 shadow-lg" style="border-radius: 15px; background: white;">
+                <div class="card-header text-white text-center py-4" style="background-color: #002B49; border-top-left-radius: 15px; border-top-right-radius: 15px;">
+                    <h3 class="fw-bold mb-0"><i class="fa-solid fa-file-signature me-2"></i>NUBTK Admission Application</h3>
+                    <p class="mb-0 text-white-50 small">Session 2026 • CSE Department Enrollment</p>
+                </div>
+                <div class="card-body p-4 p-md-5">
+                    <!-- পরিবর্তন ১: ফাইল বা ছবি আপলোড করার সুবিধার্থে enctype যুক্ত করা হলো -->
+                    <form method="POST" action="{% url 'student_register' %}" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        
+                        <h5 class="text-primary fw-bold mb-3 border-bottom pb-2"><i class="fa-solid fa-user me-2"></i>Personal Details</h5>
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Student Full Name <span class="text-danger">*</span></label>
+                            <input type="text" name="student_name" class="form-control" placeholder="Enter full legal name" required>
+                        </div>
+                        
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Father's Name <span class="text-danger">*</span></label>
+                                <input type="text" name="father_name" class="form-control" placeholder="Father's name" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Mother's Name <span class="text-danger">*</span></label>
+                                <input type="text" name="mother_name" class="form-control" placeholder="Mother's name" required>
+                            </div>
+                        </div>
+
+                        <h5 class="text-primary fw-bold mt-4 mb-3 border-bottom pb-2"><i class="fa-solid fa-address-book me-2"></i>Contact Information</h5>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Phone Number <span class="text-danger">*</span></label>
+                                <input type="tel" name="phone_number" class="form-control" placeholder="e.g. 017XXXXXXXX" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Email Address <span class="text-danger">*</span></label>
+                                <input type="email" name="email" class="form-control" placeholder="student@gmail.com" required>
+                            </div>
+                        </div>
+
+                        <h5 class="text-primary fw-bold mt-4 mb-3 border-bottom pb-2"><i class="fa-solid fa-graduation-cap me-2"></i>Academic Scores</h5>
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">SSC GPA Point <span class="text-danger">*</span></label>
+                                <input type="number" step="0.01" min="0" max="5" name="ssc_gpa" class="form-control" placeholder="0.00 - 5.00" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">HSC GPA Point <span class="text-danger">*</span></label>
+                                <input type="number" step="0.01" min="0" max="5" name="hsc_gpa" class="form-control" placeholder="0.00 - 5.00" required>
+                            </div>
+                        </div>
+
+                        <!-- পরিবর্তন ২: টার্গেট ডিপার্টমেন্ট এবং প্রোফাইল পিকচার ইনপুট সেকশন যোগ করা হলো -->
+                        <h5 class="text-primary fw-bold mt-4 mb-3 border-bottom pb-2"><i class="fa-solid fa-building-columns me-2"></i>Target Department</h5>
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold">Select Department <span class="text-danger">*</span></label>
+                            <select name="department" class="form-select" required>
+                                <option value="CSE" selected>Computer Science & Engineering (CSE)</option>
+                                <option value="EEE">Electrical & Electronic Engineering (EEE)</option>
+                                <option value="Civil">Civil Engineering (CE)</option>
+                                <option value="BBA">Bachelor of Business Administration (BBA)</option>
+                                <option value="English">BA in English</option>
+                            </select>
+                        </div>
+
+                        <h5 class="text-primary fw-bold mt-4 mb-3 border-bottom pb-2"><i class="fa-solid fa-camera me-2"></i>Profile Image Attachment</h5>
+                        <div class="mb-4 bg-light p-3 border rounded">
+                            <label class="form-label d-block fw-semibold text-dark"><i class="fa-solid fa-circle-info me-1 text-primary"></i> Upload Passport Size Photo <span class="text-danger">*</span></label>
+                            <input type="file" name="profile_picture" class="form-control mb-1" accept="image/*" required>
+                            <small class="text-muted"><i class="fa-solid fa-info-circle me-1"></i> (Maximum file size: 2MB. Format: JPG, PNG)</small>
+                        </div>
+
+                        <div class="d-grid gap-2 mt-4">
+                            <button type="submit" class="btn btn-lg py-2 text-white fw-bold shadow" style="background-color: #F26522;">
+                                <i class="fa-solid fa-paper-plane me-2"></i>Submit Admission Application
+                            </button>
+                            <a href="{% url 'home' %}" class="btn btn-light btn-sm text-muted">Cancel & Return</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

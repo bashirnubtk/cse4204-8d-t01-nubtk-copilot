@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container my-5 py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-5">
+            <div class="card border-0 shadow-lg" style="border-radius: 12px; background: white;">
+                <div class="card-body p-4 p-md-5">
+                    <div class="text-center mb-4">
+                        <div class="mb-2 d-inline-block p-3 rounded-circle bg-light text-primary">
+                            <i class="fa-solid fa-shield-halved fa-2x"></i>
+                        </div>
+                        <h4 class="fw-bold text-dark mb-1">NUBTK Pilot Portal</h4>
+                        <p class="text-muted small">Student Login & Admin Access Gateway</p>
+                    </div>
+
+                    <div class="alert alert-info py-2 border-0 px-3 small mb-4" style="border-radius: 8px;">
+                        <i class="fa-solid fa-circle-info me-1"></i> <strong>রোল সিলেকশন গাইড:</strong> স্টুডেন্ট এবং অ্যাডমিন উভয়েই নিজ নিজ রেজিস্টার্ড জিমেইল আইডি দিয়ে প্রবেশ করুন।
+                    </div>
+
+                    <form method="POST" action="{% url 'portal_login' %}">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold small">Registered Email Address</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light border-end-0"><i class="fa-solid fa-envelope text-muted"></i></span>
+                                <input type="email" name="username" class="form-control border-start-0 ps-0" placeholder="yourname@gmail.com" required style="box-shadow: none;">
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold small">Portal Access Password / Digital ID</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light border-end-0"><i class="fa-solid fa-key text-muted"></i></span>
+                                <input type="password" name="password" id="password-field" class="form-control border-x-0 ps-0" placeholder="••••••••" required style="box-shadow: none;">
+                                <span class="input-group-text bg-white border-start-0" id="toggle-password" style="cursor: pointer;">
+                                    <i class="fa-solid fa-eye text-muted"></i>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="d-grid mb-3">
+                            <button type="submit" class="btn text-white fw-bold py-2 shadow-sm" style="background-color: #002B49;">
+                                <i class="fa-solid fa-right-to-bracket me-2"></i>Secure Portal Sign In
+                            </button>
+                        </div>
+                        
+                        <div class="text-center">
+                            <small class="text-muted">New student applicant? <a href="{% url 'student_register' %}" class="text-decoration-none fw-semibold" style="color: #F26522;">Apply here</a></small>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // পাসওয়ার্ড দেখা বা লুকানোর জন্য আইকন টগল লজিক
+    const passwordField = document.getElementById('password-field');
+    const togglePassword = document.getElementById('toggle-password');
+    const toggleIcon = togglePassword.querySelector('i');
+
+    togglePassword.addEventListener('click', function () {
+        // টাইপ পরিবর্তন করা
+        const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
+        passwordField.setAttribute('type', type);
+        
+        // আইকন পরিবর্তন করা (fa-eye থেকে fa-eye-slash)
+        toggleIcon.classList.toggle('fa-eye');
+        toggleIcon.classList.toggle('fa-eye-slash');
+    });
+</script>
+{% endblock %}
