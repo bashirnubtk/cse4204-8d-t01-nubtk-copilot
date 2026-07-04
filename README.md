@@ -10,18 +10,18 @@
 
 ---
 
-## 👥 Team Information (Team: CSE4204-8D-T03)
+## 👥 Team Information (Team: CSE4204-8D-T01)
 * **Section:** 8D
-* **Academic Term:** Fall 2025
+* **Academic Term:** Fall 2026
 * **Supervising Instructor:** Md. Riaz Mahmud, Assistant Professor, Dept of CSE, NUBTK
 
 ### Core Team & Responsibilities
 | Full Member Name | Student ID | Core Infrastructure Focus | Primary GitHub Branch |
 | :--- | :--- | :--- | :--- |
-| **Bashir Alam** | 11220320963 | **Team Leader** \| Django Core Architecture, OpenRouter AI Pipelines | `branch-bashir_core_backend` |
-| **Tisha Rani Chakroborty** | 11220320954 | **Frontend Architect** \| Responsive Interface Panels, Tailwind Token Engine | `branch-tisha_frontend` |
-| **Fariha Rahman Oishee** | 11220320967 | **Database Manager** \| Schema Relational Modeling, Supabase PostgreSQL Routing | `branch-oishee_database` |
-| **Ratul Raha Shuvo** | 11220320949 | **Backend Support** \| Payment Sub-systems, Automated Document Workflows | `branch-ratul_backend_support` |
+| **Bashir Alam** | 11220320963 | **Team Leader** \| Django Core Architecture, OpenRouter AI Pipelines | `bashir_core_backend` |
+| **Tisha Rani Chakroborty** | 11220320954 | **Frontend Architect** \| Responsive Interface Panels, Tailwind Token Engine | `tisha_frontend` |
+| **Fariha Rahman Oishee** | 11220320967 | **Database Manager** \| Schema Relational Modeling, Supabase PostgreSQL Routing | `oishee_database` |
+| **Ratul Raha Shuvo** | 11220320949 | **Backend Support** \| Payment Sub-systems, Automated Document Workflows | `ratul_backend_support` |
 
 ---
 
@@ -55,7 +55,7 @@ nubtk_copilot/                         [System Root Environment]
 
 As per the course workflow, all structured documents and sprint milestones are maintained within the repository tree:
 
-* 📄 **Project Proposal (Week 1-2):** Available in `documentation/CSE4204-8D-T03_Proposal.pdf`
+* 📄 **Project Proposal (Week 1-2):** Available in `documentation/CSE4204-8D-T01_Proposal.pdf`
 * 📄 **Software Requirements Specification - SRS (Week 3):** *[Pending Sprint Milestone]*
 * 📄 **System Architecture & ER Diagram (Week 4):** *[Pending Sprint Milestone]*
 * 📄 **UI/UX Figma Wireframes (Week 5):** *[Pending Sprint Milestone]*
@@ -78,8 +78,8 @@ Follow these steps to run the core server registry locally:
 1. Clone the master repository system:
 
 ```bash
-git clone [https://github.com/your-username/cse4204-8d-t03-nubtk-copilot.git](https://github.com/your-username/cse4204-8d-t03-nubtk-copilot.git)
-cd cse4204-8d-t03-nubtk-copilot
+git clone [https://github.com/bashirnubtk/cse4204-8d-t01-nubtk-copilot.git](https://github.com/bashirnubtk/cse4204-8d-t01-nubtk-copilot.git)
+cd cse4204-8d-t01-nubtk-copilot
 
 ```
 
