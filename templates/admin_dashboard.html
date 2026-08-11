@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NUBTK Admin | Control Command Center</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-blue: #002B49;
+            --teal-accent: #007A87;
+            --light-bg: #F4F6F9;
+        }
+        body {
+            background-color: var(--light-bg);
+            font-family: 'Segoe UI', system-ui, sans-serif;
+        }
+        .sidebar {
+            background-color: var(--primary-blue);
+            min-height: 100vh;
+            color: white;
+        }
+        .sidebar .nav-link {
+            color: rgba(255,255,255,0.75);
+            border-radius: 4px;
+            margin: 4px 0;
+            transition: all 0.2s;
+        }
+        .sidebar .nav-link:hover, .sidebar .nav-link.active {
+            color: white;
+            background-color: var(--teal-accent);
+        }
+        .stat-card {
+            border: none;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            transition: transform 0.2s;
+        }
+        .stat-card:hover {
+            transform: translateY(-3px);
+        }
+        .table-container {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            padding: 20px;
+        }
+        .status-badge {
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        /* নতুন Department Grid - তোমার light theme এর সাথে */
+        .dept-matrix-card {
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            background: white;
+            transition: all 0.2s;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+        }
+        .dept-matrix-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 16px rgba(0,122,135,0.15);
+        }
+        .dept-active {
+            border-left: 4px solid var(--teal-accent) !important;
+            background-color: #f0fafa !important;
+        }
+    </style>
+</head>
+<body>
+ 
+<div class="container-fluid">
+    <div class="row">
+        <!-- সাইডবার - আগের মতোই -->
+        <div class="col-md-3 col-lg-2 sidebar p-3 d-flex flex-column">
+            <div class="text-center my-3">
+                <h4 class="fw-bold text-truncate"><i class="bi bi-cpu-fill text-warning me-2"></i>NUBTK AI</h4>
+                <span class="badge bg-secondary px-2 py-1 small">Live Core Terminal</span>
+            </div>
+            <hr class="text-white text-opacity-25">
+            
+            <ul class="nav nav-pills flex-column mb-auto">
+                <li class="nav-item">
+                    <a href="{% url 'admin_dashboard' %}" class="nav-link active"><i class="bi bi-speedometer2 me-2"></i> Main Console</a>
+                </li>
+                <li>
+                    <a href="{% url 'admin_course_matrix' %}" class="nav-link"><i class="bi bi-journal-bookmark me-2"></i> Course Matrix</a>
+                </li>
+                <li>
+                    <a href="{% url 'admin_ai_analytics' %}" class="nav-link"><i class="bi bi-robot me-2"></i> AI Analytics Hub</a>
+                </li>
+            </ul>
+            
+            <hr class="text-white text-opacity-25">
+            <div class="d-grid">
+                <a href="{% url 'admin_logout' %}" class="btn btn-danger btn-sm rounded-1"><i class="bi bi-box-arrow-left me-1"></i> Sign Out</a>
+            </div>
+        </div>
+ 
+        <!-- মূল কন্টেন্ট -->
+        <div class="col-md-9 col-lg-10 p-4">
+            <div class="d-flex justify-content-between align-items-center mb-4 pb-2 border-bottom">
+                <div>
+                    <h2 class="fw-bold text-dark m-0">System Control Command</h2>
+                    <p class="text-muted small m-0">Real-time Student Marks Management Matrix</p>
+                </div>
+                <div class="text-end">
+                    <span class="badge bg-dark p-2"><i class="bi bi-clock-history me-1"></i> Live Session</span>
+                </div>
+            </div>
+ 
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-success alert-dismissible fade show rounded-1 py-2 small" role="alert">
+                        <i class="bi bi-check-circle-fill me-2"></i>{{ message }}
+                        <button type="button" class="btn-close py-2" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+ 
+            <!-- স্ট্যাট কার্ড - আগের মতো -->
+            <div class="row g-3 mb-4">
+                <div class="col-sm-6 col-lg-4">
+                    <div class="card stat-card bg-white p-3 border-start border-primary border-4">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <span class="text-muted text-uppercase small fw-bold">Total Enrolled Profiles</span>
+                                <h2 class="fw-bold m-0 mt-1 text-dark">{{ total_students }}</h2>
+                            </div>
+                            <div class="bg-primary bg-opacity-10 p-3 rounded text-primary"><i class="bi bi-people-fill fs-3"></i></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-lg-4">
+                    <div class="card stat-card bg-white p-3 border-start border-success border-4">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <span class="text-muted text-uppercase small fw-bold">Active Academic Courses</span>
+                                <h2 class="fw-bold m-0 mt-1 text-dark">{{ total_courses }}</h2>
+                            </div>
+                            <div class="bg-success bg-opacity-10 p-3 rounded text-success"><i class="bi bi-book-half fs-3"></i></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-lg-4">
+                    <div class="card stat-card bg-white p-3 border-start border-info border-4">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <span class="text-muted text-uppercase small fw-bold">AI Analytics Sessions</span>
+                                <h2 class="fw-bold m-0 mt-1 text-dark">{{ total_ai_sessions }}</h2>
+                            </div>
+                            <div class="bg-info bg-opacity-10 p-3 rounded text-info"><i class="bi bi-cpu fs-3"></i></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- নতুন Departmental Control Matrix -->
+            <div class="my-4">
+                <h4 class="fw-bold text-dark mb-1"><i class="bi bi-diagram-3-fill text-info me-2"></i>Departmental Control Matrix</h4>
+                <p class="text-muted small mb-3">Select an academic department to manage student records and update marks</p>
+                
+                <div class="row g-3">
+                    <div class="col-md-3">
+                        <a href="?dept=CSE" class="text-decoration-none">
+                            <div class="dept-matrix-card p-3 h-100 {% if selected_dept == 'CSE' %}dept-active{% endif %}">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <div class="p-2 bg-primary bg-opacity-10 rounded text-primary fs-4">
+                                        <i class="bi bi-cpu"></i>
+                                    </div>
+                                    <span class="badge bg-success small">Online</span>
+                                </div>
+                                <h6 class="fw-bold text-dark mb-1">Dept. of CSE</h6>
+                                <p class="text-muted mb-0" style="font-size: 12px;">Computer Science & Engineering</p>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-3" onclick="alert('BBA Department is locked. Please seed data first.')">
+                        <div class="dept-matrix-card p-3 h-100" style="opacity:0.6; cursor:not-allowed;">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <div class="p-2 bg-secondary bg-opacity-10 rounded text-muted fs-4"><i class="bi bi-graph-up-arrow"></i></div>
+                                <span class="badge bg-secondary small">Locked</span>
+                            </div>
+                            <h6 class="fw-bold text-muted mb-1">Dept. of BBA</h6>
+                            <p class="text-muted mb-0" style="font-size: 12px;">Coming Soon</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3" onclick="alert('EEE Department is locked. Please seed data first.')">
+                        <div class="dept-matrix-card p-3 h-100" style="opacity:0.6; cursor:not-allowed;">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <div class="p-2 bg-secondary bg-opacity-10 rounded text-muted fs-4"><i class="bi bi-lightning-charge"></i></div>
+                                <span class="badge bg-secondary small">Locked</span>
+                            </div>
+                            <h6 class="fw-bold text-muted mb-1">Dept. of EEE</h6>
+                            <p class="text-muted mb-0" style="font-size: 12px;">Coming Soon</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3" onclick="alert('Civil Department is locked. Please seed data first.')">
+                        <div class="dept-matrix-card p-3 h-100" style="opacity:0.6; cursor:not-allowed;">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <div class="p-2 bg-secondary bg-opacity-10 rounded text-muted fs-4"><i class="bi bi-building"></i></div>
+                                <span class="badge bg-secondary small">Locked</span>
+                            </div>
+                            <h6 class="fw-bold text-muted mb-1">Dept. of Civil</h6>
+                            <p class="text-muted mb-0" style="font-size: 12px;">Coming Soon</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+ 
+            <!-- তোমার আসল টেবিল - এখন CSE সিলেক্ট করলে দেখাবে -->
+            {% if selected_dept == 'CSE' %}
+            <div class="table-container">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5 class="fw-bold m-0 text-dark"><i class="bi bi-sliders text-warning me-2"></i>Live Registration Matrix - CSE</h5>
+                    <button onclick="window.location.reload();" class="btn btn-outline-secondary btn-sm rounded-1 small"><i class="bi bi-arrow-clockwise"></i> Refresh</button>
+                </div>
+                
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Student Name</th>
+                                <th>Contact Email</th>
+                                <th>Phone</th>
+                                <th>SSC / HSC GPA</th>
+                                <th>Profile Status</th>
+                                <th class="text-center">Real-Time Core Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for student in recent_registrations %}
+                            <tr>
+                                <td class="fw-bold text-secondary">
+                                    {{ student.student_name }}
+                                    {% if student.status == 'APPROVED' %}
+                                        <br><small class="text-primary font-monospace">ID: {{ student.user.username }}</small>
+                                    {% endif %}
+                                </td>
+                                <td>{{ student.user.email }}</td>
+                                <td>{{ student.phone_number }}</td>
+                                <td>
+                                    <span class="badge bg-light text-dark">S: {{ student.ssc_gpa }}</span>
+                                    <span class="badge bg-light text-dark">H: {{ student.hsc_gpa }}</span>
+                                </td>
+                                <td>
+                                    {% if student.status == 'APPROVED' %}
+                                        <span class="bg-success bg-opacity-10 text-success status-badge">APPROVED</span>
+                                    {% elif student.status == 'PENDING' %}
+                                        <span class="bg-warning bg-opacity-10 text-warning status-badge">PENDING REVIEW</span>
+                                    {% else %}
+                                        <span class="bg-danger bg-opacity-10 text-danger status-badge">{{ student.status }}</span>
+                                    {% endif %}
+                                </td>
+                                <td class="text-center">
+                                    <div class="btn-group btn-group-sm">
+                                      <a href="{% url 'admin_update_marks' student.id %}" class="btn btn-dark fw-bold rounded-1 me-1">
+                                          <i class="bi bi-pencil-square me-1"></i> Update Marks & AI
+                                      </a>
+                                      {% if student.status == 'PENDING' %}
+                                      <a href="{% url 'admin_approve_student' student.id %}" class="btn btn-success rounded-1 me-1" title="Approve">
+                                          <i class="bi bi-check-lg"></i>
+                                      </a>
+                                      <a href="{% url 'admin_reject_student' student.id %}" class="btn btn-warning rounded-1 me-1" title="Reject">
+                                          <i class="bi bi-x-lg"></i>
+                                      </a>
+                                      {% endif %}
+                                      <a href="{% url 'admin_delete_student' student.id %}" class="btn btn-danger rounded-1" title="Delete" onclick="return confirm('🚨 WARNING: Permanently delete this profile?');">
+                                          <i class="bi bi-trash3-fill"></i>
+                                      </a>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="6" class="text-center text-muted py-4">
+                                    <i class="bi bi-folder-x fs-2 d-block mb-2"></i> No CSE students found.
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            {% else %}
+            <!-- ডিপার্টমেন্ট সিলেক্ট না করলে গাইড -->
+            <div class="table-container text-center py-5">
+                <i class="bi bi-folder-symlink text-muted display-4 mb-3"></i>
+                <h5 class="fw-bold text-dark">Select Department of CSE Above</h5>
+                <p class="text-muted small mx-auto" style="max-width: 450px;">Click the CSE card to load live student registrations and enable marks update terminal.</p>
+            </div>
+            {% endif %}
+ 
+        </div>
+    </div>
+</div>
+ 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

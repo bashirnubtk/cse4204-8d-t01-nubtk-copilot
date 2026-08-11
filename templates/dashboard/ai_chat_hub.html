@@ -1,0 +1,148 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container-fluid mt-4 px-4">
+    <div class="row">
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-sm border-0 bg-dark text-white p-3 h-100">
+                <h5 class="card-title text-warning border-bottom pb-2" style="font-weight: 700;">
+                    <i class="fas fa-brain"></i> AI Mentor Core Memory
+                </h5>
+                <p class="text-white-50 small">This live metadata vector is being injected into the LLM system prompt in real-time:</p>
+
+                <div class="mt-3">
+                    <span class="text-muted d-block small">Student Identity</span>
+                    <strong class="text-info fs-5">{{ profile.student_name }}</strong>
+                </div>
+
+                <div class="mt-3">
+                    <span class="text-muted d-block small">Data Science Skill Score</span>
+                    <span class="badge bg-success p-2 mt-1">{{ eligibility_score }}% Ready</span>
+                </div>
+
+                <div class="mt-3">
+                    <span class="text-muted d-block small">ML Predicted Career Vector</span>
+                    <span class="text-light fw-bold">{{ career_track|default:"Software Engineering" }}</span>
+                </div>
+
+                <div class="mt-3">
+                    <span class="text-muted d-block small">Neural Network CGPA Forecast</span>
+                    <span class="text-warning fs-4" style="font-weight: 700;">{{ predicted_cgpa|default:"0.00" }}</span>
+                </div>
+
+                <div class="mt-4 p-2 rounded text-center" style="background: rgba(255,255,255,0.05); border: 1px dashed rgba(255,255,255,0.2);">
+                    <small class="text-white-50"><i class="fas fa-network-wired"></i> OpenRouter Gateway Active</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-8 mb-4">
+            <div class="card shadow-sm border-0 h-100 bg-white">
+                <div class="card-header bg-primary text-white py-3 d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0" style="font-weight: 600;"><i class="fas fa-comments"></i> NUBTK Copilot AI Workspace</h5>
+                    <span class="badge bg-light text-primary">OpenRouter Hybrid Cluster</span>
+                </div>
+
+                <div class="card-body p-4" style="height: 400px; overflow-y: auto; background-color: #f8f9fa;" id="chatWindow">
+                    {% for chat in conversations %}
+                        <div class="d-flex justify-content-end mb-3">
+                            <div class="bg-primary text-white p-3 rounded shadow-sm" style="max-width: 75%; border-radius: 15px 15px 0px 15px!important;">
+                                <small class="d-block text-white-50 mb-1" style="font-size: 0.7rem;">You</small>
+                                {{ chat.user_message }}
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-start mb-3">
+                            <div class="bg-white text-dark p-3 rounded shadow-sm border" style="max-width: 75%; border-radius: 15px 15px 15px 0px!important;">
+                                <small class="d-block text-muted mb-1" style="font-size: 0.7rem; font-weight: bold; color: #1e3c72;">NUBTK Copilot</small>
+                                {{ chat.ai_response|linebreaks }}
+                            </div>
+                        </div>
+                    {% empty %}
+                        <div class="text-center text-muted my-5 py-5">
+                            <i class="fas fa-robot fa-3x mb-3"></i>
+                            <p class="mb-0">Hello {{ profile.student_name }}! I am your AI Mentor.</p>
+                            <small>Ask me anything about your academic track, due bills, or career recommendations.</small>
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <div class="card-footer bg-white border-top-0 p-3">
+                    <form method="POST" action="{% url 'student_ai_chat_hub' %}" id="chatForm" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="input-group">
+                            <label class="input-group-text bg-light border-2 border-end-0 text-secondary mb-0" style="cursor: pointer;" for="attached_image" title="Upload Image/Assignment for AI Review">
+                                <i class="fas fa-camera fa-lg"></i>
+                                <input type="file" id="attached_image" name="attached_image" accept="image/*" style="display: none;" onchange="previewImage(this);">
+                            </label>
+
+                            <input type="text" name="user_message" class="form-control p-3 border-2 border-start-0" placeholder="Type your academic doubt or ask to review CV/Slide image here..." autocomplete="off">
+
+                            <button type="submit" class="btn btn-primary px-4">
+                                <i class="fas fa-paper-plane"></i> Send
+                            </button>
+                        </div>
+                        <div id="imagePreview" class="mt-2 small text-success fw-bold" style="display: none;">
+                            <i class="fas fa-paperclip"></i> Image/File Attachment Ready! <span onclick="clearPreview();" class="text-danger ms-2" style="cursor:pointer;">✖ Remove</span>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var chatWindow = document.getElementById('chatWindow');
+    chatWindow.scrollTop = chatWindow.scrollHeight;
+
+    function previewImage(input) {
+        if (input.files && input.files[0]) {
+            document.getElementById('imagePreview').style.display = 'block';
+        }
+    }
+    function clearPreview() {
+        document.getElementById('attached_image').value = '';
+        document.getElementById('imagePreview').style.display = 'none';
+    }
+
+    document.getElementById('chatForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        var form = this;
+        var formData = new FormData(form);
+        var messageInput = form.querySelector('input[name="user_message"]');
+        var userText = messageInput.value.trim();
+        var hasImage = document.getElementById('attached_image').files.length > 0;
+
+        if (!userText && !hasImage) return;
+
+        var userHtml = `<div class="d-flex justify-content-end mb-3"><div class="bg-primary text-white p-3 rounded shadow-sm" style="max-width:75%;border-radius:15px 15px 0 15px!important;"><small class="d-block text-white-50 mb-1" style="font-size:0.7rem;">You</small>${userText || '[Uploading Image...]'}</div></div>`;
+        chatWindow.insertAdjacentHTML('beforeend', userHtml);
+        messageInput.value = '';
+        clearPreview();
+        chatWindow.scrollTop = chatWindow.scrollHeight;
+
+        var loadingHtml = `<div class="d-flex justify-content-start mb-3" id="aiLoadingBubble"><div class="bg-white text-dark p-3 rounded shadow-sm border" style="max-width:75%;border-radius:15px 15px 15px 0!important;"><small class="d-block text-muted mb-1" style="font-size:0.7rem;font-weight:bold;">NUBTK Copilot</small><span class="text-muted"><i class="fas fa-spinner fa-spin"></i> AI Mentor thinking...</span></div></div>`;
+        chatWindow.insertAdjacentHTML('beforeend', loadingHtml);
+        chatWindow.scrollTop = chatWindow.scrollHeight;
+
+        fetch(form.action, {
+            method: 'POST',
+            body: formData,
+            headers: {'X-Requested-With': 'XMLHttpRequest'}
+        })
+        .then(r => r.json())
+        .then(data => {
+            document.getElementById('aiLoadingBubble')?.remove();
+            if(data.status === 'success') {
+                var aiHtml = `<div class="d-flex justify-content-start mb-3"><div class="bg-white text-dark p-3 rounded shadow-sm border" style="max-width:75%;border-radius:15px 15px 15px 0!important;"><small class="d-block text-muted mb-1" style="font-size:0.7rem;font-weight:bold;">NUBTK Copilot</small>${data.ai_response.replace(/\n/g, '<br>')}</div></div>`;
+                chatWindow.insertAdjacentHTML('beforeend', aiHtml);
+            }
+            chatWindow.scrollTop = chatWindow.scrollHeight;
+        })
+        .catch(err => {
+            document.getElementById('aiLoadingBubble')?.remove();
+            console.error(err);
+        });
+    });
+</script>
+{% endblock %}

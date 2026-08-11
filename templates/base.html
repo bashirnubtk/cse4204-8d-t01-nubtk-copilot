@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NUBTK - AI Copilot & Student Portal</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-navy: #002B49;
+            --accent-orange: #F26522;
+            --dark-canvas: #0F172A;
+            --dark-card: #1E293B;
+            --soft-light: #F8F9FA;
+        }
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: var(--soft-light);
+            color: #334155;
+        }
+        .navbar-premium {
+            background-color: var(--primary-navy);
+            border-bottom: 3px solid var(--accent-orange);
+        }
+        .btn-premium-accent {
+            background-color: var(--accent-orange);
+            color: white;
+            font-weight: 600;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+        .btn-premium-accent:hover {
+            background-color: #d45316;
+            color: white;
+            transform: translateY(-1px);
+        }
+        .footer-premium {
+            background-color: var(--primary-navy);
+            color: #94A3B8;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark navbar-premium shadow py-3">
+        <div class="container">
+            <a class="navbar-brand fw-bold tracking-wide text-white" href="{% url 'home' %}">
+                <i class="fa-solid fa-graduation-cap me-2 text-warning"></i>NUBTK COPILOT
+            </a>
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#portalNavbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="portalNavbar">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item"><a class="nav-link text-white-50 me-2" href="{% url 'home' %}">Home</a></li>
+                    {% if user.is_authenticated %}
+                        {% if user.is_student %}
+                            <li class="nav-item"><a class="btn btn-outline-light btn-sm px-3 me-2" href="{% url 'student_dashboard' %}"><i class="fa-solid fa-gauge me-1"></i>Dashboard</a></li>
+                        {% else %}
+                            <li class="nav-item"><a class="btn btn-outline-warning btn-sm px-3 me-2" href="{% url 'admin_dashboard' %}"><i class="fa-solid fa-user-shield me-1"></i>Authority panel</a></li>
+                        {% endif %}
+                        <li class="nav-item"><a class="btn btn-danger btn-sm px-3 shadow-sm" href="{% url 'logout' %}"><i class="fa-solid fa-arrow-right-from-bracket me-1"></i>Logout</a></li>
+                    {% else %}
+                        <li class="nav-item"><a class="btn btn-outline-light btn-sm px-3 me-2 shadow-sm" href="{% url 'portal_login' %}"><i class="fa-solid fa-lock me-1"></i>Portal Login</a></li>
+                        <li class="nav-item"><a class="btn btn-premium-accent btn-sm px-3 shadow" href="{% url 'student_register' %}"><i class="fa-solid fa-user-plus me-1"></i>Admission 2026</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-3">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %} alert-dismissible fade show shadow-sm border-0" role="alert">
+                    <div class="d-flex align-items-center">
+                        <i class="fa-solid {% if message.tags == 'error' %}fa-circle-exclamation{% else %}fa-circle-check{% endif %} fa-lg me-2"></i>
+                        <div>{{ message }}</div>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <footer class="footer-premium text-center py-4 mt-5">
+        <div class="container">
+            <p class="mb-1 text-white">Northern University of Business and Technology, Khulna</p>
+            <p class="mb-0 text-white-50 small">&copy; 2026 Department of Computer Science & Engineering. Developed under CSE 4204 Project Frameworks.</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

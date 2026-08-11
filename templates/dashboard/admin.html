@@ -1,0 +1,114 @@
+<!-- Auto-generated HTML file -->
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container-fluid my-5 px-md-5">
+    <div class="card border-0 bg-dark text-white p-4 shadow-sm mb-5" style="border-radius: 12px;">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center">
+            <div>
+                <span class="badge bg-warning text-dark font-monospace mb-2 text-uppercase">Academic Control Center</span>
+                <h2 class="fw-bold mb-0 text-white"><i class="fa-solid fa-user-shield me-2 text-warning"></i>University Operations Terminal</h2>
+                <p class="text-white-50 small mb-0">System Authority Account Profile: {{ user.email }}</p>
+            </div>
+            <div class="mt-3 mt-md-0">
+                <span class="btn btn-outline-light btn-sm disabled border-secondary"><i class="fa-solid fa-clock me-1"></i>Session 2026 Live</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-xl-5">
+            <div class="card border-0 shadow-sm h-100" style="border-radius: 10px; background: white;">
+                <div class="card-header bg-light py-3 border-0">
+                    <h5 class="fw-bold mb-0 text-slate-800"><i class="fa-solid fa-folder-open me-2 text-primary"></i>Pending Verification Influx ({{ pending_list|length }})</h5>
+                </div>
+                <div class="card-body p-3">
+                    {% if not pending_list %}
+                        <div class="text-center py-5 text-muted">
+                            <i class="fa-solid fa-circle-check fa-3x mb-3 text-light"></i>
+                            <p class="mb-0 small">No incoming admission applications await verification.</p>
+                        </div>
+                    {% else %}
+                        {% for app in pending_list %}
+                            <div class="p-3 border rounded mb-3 shadow-2xs bg-light">
+                                <div class="d-flex justify-content-between align-items-start mb-2">
+                                    <div>
+                                        <h6 class="fw-bold text-dark mb-0">{{ app.student_name }}</h6>
+                                        <small class="text-muted d-block">{{ app.user.email }}</small>
+                                        <small class="text-muted d-block font-monospace">Phone: {{ app.phone_number }}</small>
+                                    </div>
+                                    <span class="badge bg-secondary px-2 py-1 text-uppercase font-monospace small">Pending</span>
+                                </div>
+                                <div class="row g-2 my-2 bg-white p-2 rounded border border-light text-center">
+                                    <div class="col-6"><small class="text-muted d-block">SSC GPA</small><strong class="text-primary">{{ app.ssc_gpa }}</strong></div>
+                                    <div class="col-6"><small class="text-muted d-block">HSC GPA</small><strong class="text-primary">{{ app.hsc_gpa }}</strong></div>
+                                </div>
+                                <div class="d-flex gap-2 mt-3">
+                                    <form method="POST" action="{% url 'admin_approve_student' %}" class="w-100">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="profile_id" value="{{ app.id }}">
+                                        <button type="submit" class="btn btn-success btn-sm w-100 fw-bold"><i class="fa-solid fa-check me-1"></i>Approve</button>
+                                    </form>
+                                    <form method="POST" action="{% url 'admin_reject_student' %}" class="w-100">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="profile_id" value="{{ app.id }}">
+                                        <button type="submit" class="btn btn-outline-danger btn-sm w-100 fw-bold"><i class="fa-solid fa-xmark me-1"></i>Reject</button>
+                                    </form>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-7">
+            <div class="card border-0 shadow-sm h-100" style="border-radius: 10px; background: white;">
+                <div class="card-header bg-light py-3 border-0">
+                    <h5 class="fw-bold mb-0 text-slate-800"><i class="fa-solid fa-graduation-cap me-2 text-success"></i>Enrolled Student Evaluation Matrix ({{ approved_list|length }})</h5>
+                </div>
+                <div class="card-body p-0">
+                    {% if not approved_list %}
+                        <div class="text-center py-5 text-muted">
+                            <i class="fa-solid fa-users-slash fa-3x mb-3 text-light"></i>
+                            <p class="mb-0 small">No verified active student accounts found in database records.</p>
+                        </div>
+                    {% else %}
+                        <div class="table-responsive">
+                            <table class="table align-middle table-hover mb-0">
+                                <thead class="table-light font-monospace small">
+                                    <tr>
+                                        <th class="ps-3">Digital Identity Code / Name</th>
+                                        <th class="text-center">Semester</th>
+                                        <th class="text-center">CT Mark</th>
+                                        <th class="text-center">Quiz Mark</th>
+                                        <th class="text-center">CGPA</th>
+                                        <th class="text-center">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="small">
+                                    {% for std in approved_list %}
+                                        <tr>
+                                            <td class="ps-3 py-3">
+                                                <strong class="text-primary font-monospace d-block">{{ std.digital_id }}</strong>
+                                                <span class="fw-semibold text-dark">{{ std.student_name }}</span>
+                                            </td>
+                                            <td class="text-center fw-bold text-secondary">S-{{ std.current_semester }}</td>
+                                            <td class="text-center font-monospace text-slate-700">{{ std.class_test_mark }}</td>
+                                            <td class="text-center font-monospace text-slate-700">{{ std.quiz_mark }}</td>
+                                            <td class="text-center"><span class="badge bg-info text-dark font-monospace fw-bold">{{ std.current_cgpa }}</span></td>
+                                            <td class="text-center">
+                                                <a href="{% url 'admin_update_marks' std.id %}" class="btn btn-primary btn-sm px-2 py-1 shadow-2xs"><i class="fa-solid fa-pen-to-square me-1"></i>Input Grades</a>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
