@@ -10,7 +10,7 @@
     }
     .metric-card {
         border: none;
-        border-left: 4px solid var(--accent-orange);
+        border-left: 4px solid var(--accent-orange, #fd7e14);
         transition: all 0.3s ease;
         height: 100%;
     }
@@ -19,12 +19,12 @@
         box-shadow: 0 10px 20px rgba(0,0,0,0.1);
     }
     .progress-premium {
-        height: 8px;
+        height: 10px;
         border-radius: 10px;
     }
     .id-card-premium {
         background: linear-gradient(135deg, #1E293B 0%, #334155 100%);
-        border: 2px solid var(--accent-orange);
+        border: 2px solid var(--accent-orange, #fd7e14);
         color: white;
         border-radius: 12px;
     }
@@ -35,6 +35,7 @@
 </style>
 
 <div class="container-fluid py-4">
+    <!-- Header Hero Banner -->
     <div class="student-hero p-4 mb-4 shadow">
         <div class="row align-items-center">
             <div class="col-md-8">
@@ -64,6 +65,7 @@
         </div>
     </div>
 
+    <!-- Skill Analyzer Engine -->
     <div class="row g-4 mb-4">
         <div class="col-lg-8">
             <div class="card metric-card shadow-sm">
@@ -71,9 +73,9 @@
                     <div class="d-flex justify-content-between align-items-start mb-2">
                         <div>
                             <h5 class="fw-bold text-dark mb-1"><i class="bi bi-cpu-fill text-primary me-2"></i>Digital Skill Analyzer Engine</h5>
-                            <p class="text-muted small mb-0">Real-time international job market compatibility matrix (NumPy/Pandas Active)</p>
+                            <p class="text-muted small mb-0">Real-time job market compatibility matrix (NumPy/Pandas Active)</p>
                         </div>
-                        <span class="badge bg-light text-dark">ML v2.0 Active</span>
+                        <span class="badge bg-primary">ML v2.0 Active</span>
                     </div>
                     <h2 class="fw-bold display-6 text-primary mt-3">{{ eligibility_score|default:"0.0" }}%</h2>
                     <div class="progress progress-premium mt-2">
@@ -109,107 +111,74 @@
         </div>
     </div>
 
+    <!-- Live Performance Metrics -->
     <div class="row g-4 mb-4">
-        <div class="col-md-6 col-lg-3">
-            <div class="card metric-card shadow-sm">
-                <div class="card-body">
-                    <p class="text-muted small mb-1">Class Test (CT) Score</p>
-                    <h3 class="fw-bold">{{ profile.class_test_mark|default:"0.0" }} <span class="fs-6 text-muted">/ 30.0</span></h3>
-                    <div class="progress progress-premium">
-                        {% widthratio profile.class_test_mark|default:0 30 100 as ct_width %}
-                        <div class="progress-bar bg-success" style="width: {{ ct_width }}%"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6 col-lg-3">
-            <div class="card metric-card shadow-sm">
-                <div class="card-body">
-                    <p class="text-muted small mb-1">Quiz Matrix Evaluation</p>
-                    <h3 class="fw-bold">{{ profile.quiz_mark|default:"0.0" }} <span class="fs-6 text-muted">/ 20.0</span></h3>
-                    <div class="progress progress-premium">
-                        {% widthratio profile.quiz_mark|default:0 20 100 as quiz_width %}
-                        <div class="progress-bar bg-info" style="width: {{ quiz_width }}%"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6 col-lg-3">
+        <div class="col-md-6 col-lg-4">
             <div class="card metric-card shadow-sm">
                 <div class="card-body">
                     <p class="text-muted small mb-1">Current Semester CGPA</p>
-                    <h3 class="fw-bold text-primary">{{ profile.current_cgpa|default:"0.00" }}</h3>
-                    <p class="small text-muted mb-0">NN Predicted: <span class="fw-bold text-success">{{ predicted_cgpa|default:"N/A" }}</span></p>
+                    <h3 class="fw-bold text-primary">{{ predicted_cgpa|default:"0.00" }}</h3>
+                    <p class="small text-muted mb-0">Status: <span class="fw-bold text-success">Live Sync</span></p>
                 </div>
             </div>
         </div>
-        <div class="col-md-6 col-lg-3">
+        <div class="col-md-6 col-lg-4">
             <div class="card metric-card shadow-sm">
                 <div class="card-body">
-                    <p class="text-muted small mb-1">Attendance Percentage</p>
-                    <h3 class="fw-bold">{{ profile.attendance_percentage|default:"0.0" }}%</h3>
+                    <p class="text-muted small mb-1">Overall Skill Eligibility</p>
+                    <h3 class="fw-bold text-success">{{ eligibility_score|default:"0.0" }}%</h3>
                     <div class="progress progress-premium">
-                        <div class="progress-bar {% if profile.attendance_percentage < 60 %}bg-danger{% else %}bg-success{% endif %}" style="width: {{ profile.attendance_percentage|default:0 }}%"></div>
+                        <div class="progress-bar bg-success" style="width: {{ eligibility_score|default:0 }}%"></div>
                     </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 col-lg-4">
+            <div class="card metric-card shadow-sm">
+                <div class="card-body">
+                    <p class="text-muted small mb-1">Career Focus Area</p>
+                    <h4 class="fw-bold text-dark mb-1">{{ career_track }}</h4>
+                    <p class="small text-muted mb-0"><i class="bi bi-cpu me-1"></i>Algo: {{ ml_algo }}</p>
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- Subject Marks Table (Replaced Financial Ledger) -->
     <div class="card shadow-sm border-0 mb-4">
-        <div class="card-header bg-white border-0 pt-3">
-            <h5 class="fw-bold text-dark mb-0"><i class="bi bi-cash-coin text-success me-2"></i>Financial Statement Ledger</h5>
+        <div class="card-header bg-white border-0 pt-3 d-flex justify-content-between align-items-center">
+            <h5 class="fw-bold text-dark mb-0"><i class="bi bi-journal-check text-primary me-2"></i>Subject-Wise Marks & Performance Matrix</h5>
+            <a href="{% url 'student_practical_skills' %}" class="btn btn-sm btn-outline-primary"><i class="bi bi-pencil-square me-1"></i>Update Skill Logs</a>
         </div>
         <div class="card-body">
-            <div class="row text-center mb-4">
-                <div class="col-md-4">
-                    <p class="text-muted small mb-1">Total Payable</p>
-                    <h4 class="fw-bold text-dark">৳{{ total_payable|default:"0.00" }}</h4>
-                </div>
-                <div class="col-md-4">
-                    <p class="text-muted small mb-1">Total Paid</p>
-                    <h4 class="fw-bold text-success">৳{{ total_paid|default:"0.00" }}</h4>
-                </div>
-                <div class="col-md-4">
-                    <p class="text-muted small mb-1">Outstanding Due</p>
-                    <h4 class="fw-bold text-danger">৳{{ due_amount|default:"0.00" }}</h4>
-                </div>
-            </div>
             <div class="table-responsive">
-                <table class="table table-sm align-middle">
+                <table class="table table-hover align-middle">
                     <thead class="table-light">
                         <tr>
-                            <th>Installment Instance</th>
-                            <th>Target Amount</th>
-                            <th>Due Expiry Date</th>
-                            <th>Ledger State</th>
-                            <th class="text-end">Action</th>
+                            <th>Course Name / Code</th>
+                            <th>Class Test (30)</th>
+                            <th>Quiz (20)</th>
+                            <th>Attendance %</th>
+                            <th>Final Exam</th>
+                            <th>Subject CGPA</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {% for payment in payments %}
+                        {% for r in results_list %}
                         <tr>
-                            <td class="fw-bold">{{ payment.title }}</td>
-                            <td>৳{{ payment.amount }}</td>
-                            <td>{{ payment.due_date }}</td>
-                            <td>
-                                {% if payment.status == 'PAID' %}
-                                <span class="badge bg-success">PAID</span>
-                                {% else %}
-                                <span class="badge bg-warning text-dark">PENDING</span>
-                                {% endif %}
-                            </td>
-                            <td class="text-end">
-                                {% if payment.status == 'PENDING' %}
-                                <a href="{% url 'process_student_payment' payment.id %}" class="btn btn-sm btn-primary">Pay Now</a>
-                                {% else %}
-                                <a href="{% url 'download_payment_receipt' payment.id %}" class="btn btn-sm btn-outline-secondary"><i class="bi bi-download"></i></a>
-                                {% endif %}
-                            </td>
+                            <td class="fw-bold">{{ r.course.course_name }} <span class="text-muted fs-7">({{ r.course.course_code }})</span></td>
+                            <td>{{ r.class_test_mark|default:"0.0" }}</td>
+                            <td>{{ r.quiz_mark|default:"0.0" }}</td>
+                            <td>{{ r.attendance_percentage|default:"0.0" }}%</td>
+                            <td>{{ r.final_exam_mark|default:"0.0" }}</td>
+                            <td><span class="badge bg-primary fs-6">{{ r.subject_cgpa|default:"0.00" }}</span></td>
                         </tr>
                         {% empty %}
                         <tr>
-                            <td colspan="5" class="text-center text-muted py-3">No payment installments found for this semester.</td>
+                            <td colspan="6" class="text-center text-muted py-4">
+                                <i class="bi bi-folder-x fs-3 d-block mb-2"></i>
+                                No subject marks published yet by Admin.
+                            </td>
                         </tr>
                         {% endfor %}
                     </tbody>
