@@ -1,0 +1,25 @@
+# Python Cache
+**/__pycache__/
+*.py[cod]
+*$py.class
+
+# Environment Variables & Secrets
+.env
+.env.*
+
+# Databases
+*.sqlite3
+db.sqlite3
+
+# Virtual Environments
+venv/
+env/
+ENV/
+
+# Zip / Binary / Dump files
+*.zip
+*.txt
+*.pyc
+
+# Media & Static Uploads
+media/

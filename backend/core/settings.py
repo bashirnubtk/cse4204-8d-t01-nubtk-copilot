@@ -3,7 +3,7 @@ import sys
 from pathlib import Path
 
 # ==========================================
-# 1. Base Directory and System Paths Setup (FIRST PRIORITY)
+# 1. Base Directory and System Paths Setup
 # ==========================================
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
@@ -14,14 +14,37 @@ if str(BASE_DIR) not in sys.path:
     sys.path.insert(1, str(BASE_DIR))
 
 # ==========================================
-# 2. Security and Environment Matrix
+# 2. Universal Environment Ingestion (.env Auto Loader)
+# ==========================================
+env_file_path = BASE_DIR / '.env'
+
+def load_all_env_variables():
+    """ .env ফাইলের সকল কি-ভ্যালু গ্লোবালি OS Environment এ লোড করার নিখুঁত ব্যবস্থা """
+    if env_file_path.exists():
+        with open(env_file_path, 'r', encoding='utf-8') as f:
+            for line in f:
+                line = line.strip()
+                if line and not line.startswith('#') and '=' in line:
+                    k, v = line.split('=', 1)
+                    k = k.strip()
+                    v = v.strip().strip("'").strip('"')  # উদ্ধৃতি চিহ্ন সরানো
+                    os.environ[k] = v
+
+# ডাইরেক্ট অটো-লোড execution
+load_all_env_variables()
+
+# ==========================================
+# 3. Security and Environment Matrix
 # ==========================================
 SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-master-copilot-production-key-2026')
 DEBUG = os.environ.get('DEBUG', 'True') == 'True'
 ALLOWED_HOSTS = ['*']
 
+# OpenRouter Global API Key
+OPENROUTER_API_KEY = os.environ.get('OPENROUTER_API_KEY', '')
+
 # ==========================================
-# 3. Database Engine Configuration
+# 4. Database Engine Configuration
 # ==========================================
 DATABASES = {
     'default': {
@@ -31,12 +54,12 @@ DATABASES = {
 }
 
 # ==========================================
-# 4. Target Custom User Model Configuration (Crucial for Academics App)
+# 5. Target Custom User Model Configuration
 # ==========================================
 AUTH_USER_MODEL = 'academics.User'
 
 # ==========================================
-# 5. Core Operational Apps Register
+# 6. Core Operational Apps Register
 # ==========================================
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -55,7 +78,7 @@ INSTALLED_APPS = [
 ]
 
 # ==========================================
-# 6. Middleware and Security Pipeline
+# 7. Middleware and Security Pipeline
 # ==========================================
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -70,12 +93,12 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'core.urls'
 
 # ==========================================
-# 7. Templates Layout Structure - FIXED
+# 8. Templates Layout Structure
 # ==========================================
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BACKEND_DIR, 'apps', 'portal_web', 'templates')],  # <-- এটা যোগ করছি
+        'DIRS': [os.path.join(BACKEND_DIR, 'apps', 'portal_web', 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -91,7 +114,7 @@ TEMPLATES = [
 WSGI_APPLICATION = 'core.wsgi.application'
 
 # ==========================================
-# 8. Password Security Validators
+# 9. Password Security Validators
 # ==========================================
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
@@ -101,7 +124,7 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 # ==========================================
-# 9. Internationalization and Timezone Matrix
+# 10. Internationalization and Timezone Matrix
 # ==========================================
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'Asia/Dhaka'
@@ -109,7 +132,7 @@ USE_I18N = True
 USE_TZ = True
 
 # ==========================================
-# 10. Static and Dynamic Media Assets Management
+# 11. Static and Dynamic Media Assets Management
 # ==========================================
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
@@ -123,26 +146,13 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # ==========================================
-# 11. Secure Gmail SMTP Server Ingestion Setup (FINAL WORKING VERSION)
+# 12. Secure Gmail SMTP Server Setup
 # ==========================================
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
-env_file_path = BASE_DIR / '.env'
-
-def get_env_variable(key, default=""):
-    """ .env ফাইল থেকে সরাসরি সিকিউর ডেটা রিড করার ইউনিভার্সাল মেকানিজম """
-    if env_file_path.exists():
-        with open(env_file_path, 'r', encoding='utf-8') as f:
-            for line in f:
-                if line.strip() and not line.startswith('#') and '=' in line:
-                    k, v = line.strip().split('=', 1)
-                    if k.strip() == key:
-                        return v.strip()
-    return os.environ.get(key, default)
-
-EMAIL_HOST_USER = get_env_variable('EMAIL_HOST_USER', 'alambashir257@gmail.com')
-EMAIL_HOST_PASSWORD = get_env_variable('EMAIL_HOST_PASSWORD', '')
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', 'alambashir257@gmail.com')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', '')
 DEFAULT_FROM_EMAIL = f"NUBTK Registrar <{EMAIL_HOST_USER}>"

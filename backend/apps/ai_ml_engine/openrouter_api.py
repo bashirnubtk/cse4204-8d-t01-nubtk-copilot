@@ -23,8 +23,9 @@ class OpenRouterClient:
         
         prompt = f"Analyze the following skills for a student aiming for a career in {industry_target}: {', '.join(skill_list)}. Provide actionable gaps and recommendations as a strict JSON format containing 'gaps' and 'recommendations' keys."
         
+        # জেমিনির বদলে ওপেনরাউটারের ফ্রি মডেল বসানো হলো
         payload = {
-            "model": "google/gemini-2.5-flash", # dynamic optimized fallback model
+            "model": "qwen/qwen3-coder:free", 
             "messages": [
                 {"role": "system", "content": "You are an expert tech career mentor focusing on Bangladeshi university graduates."},
                 {"role": "user", "content": prompt}
@@ -32,7 +33,7 @@ class OpenRouterClient:
         }
         
         try:
-            response = requests.post(self.base_url, headers=headers, data=json.dumps(payload))
+            response = requests.post(self.base_url, headers=headers, data=json.dumps(payload), timeout=12)
             if response.status_code == 200:
                 result = response.json()
                 ai_content = result['choices'][0]['message']['content']
